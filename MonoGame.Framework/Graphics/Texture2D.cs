@@ -93,8 +93,8 @@ namespace Microsoft.Xna.Framework.Graphics
 {
     public class Texture2D : Texture
     {
-		protected int width;
-		protected int height;
+		internal int width;
+		internal int height;
 
 #if PSS
 		internal PssTexture2D _texture2D;

@@ -49,6 +49,14 @@ namespace Microsoft.Xna.Framework.Content
 
         internal static string Normalize(string fileName)
         {
+#if IPHONE
+            if (MonoTouch.UIKit.UIScreen.MainScreen.Scale == 2)
+            {
+                var res = Normalize(fileName + "@2x", supportedExtensions);
+                if (res != null)
+                    return res;
+            }
+#endif
             return Normalize(fileName, supportedExtensions);
         }
 
