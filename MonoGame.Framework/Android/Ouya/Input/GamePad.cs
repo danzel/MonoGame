@@ -38,6 +38,9 @@ purpose and non-infringement.
 */
 #endregion License
 
+using Android.Content;
+using Android.Hardware.Input;
+using Android.OS;
 using Android.Views;
 using System;
 
@@ -139,6 +142,19 @@ namespace Microsoft.Xna.Framework.Input
 
 			return null;
 		}
+
+		private static void ForgetGamePad(int deviceId)
+		{
+			for (int i = 0; i < GamePads.Length; i++)
+			{
+				if (GamePads[i] != null && GamePads[i]._deviceId == deviceId)
+				{
+					GamePads[i] = null;
+					break;
+				}
+			}
+		}
+
 
 		internal static bool OnKeyDown(Keycode keyCode, KeyEvent e)
 		{
@@ -287,12 +303,39 @@ namespace Microsoft.Xna.Framework.Input
 		}
 
 
-		internal static void Initialize()
+		internal static void Initialize(Context context)
 		{
 			//Iterate and 'connect' any detected gamepads
 			foreach (var deviceId in InputDevice.GetDeviceIds())
 			{
 				GetGamePad(InputDevice.GetDevice(deviceId));
+			}
+
+			var inputManager = (InputManager)context.GetSystemService("input");
+
+			inputManager.RegisterInputDeviceListener(new InputDeviceListener(), null);
+		}
+
+		internal class InputDeviceListener : InputManager.IInputDeviceListener
+		{
+			public void Dispose()
+			{
+			}
+
+			public IntPtr Handle { get; private set; }
+			public void OnInputDeviceAdded(int deviceId)
+			{
+				var device = InputDevice.GetDevice(deviceId);
+				GetGamePad(device);
+			}
+
+			public void OnInputDeviceChanged(int deviceId)
+			{
+			}
+
+			public void OnInputDeviceRemoved(int deviceId)
+			{
+				ForgetGamePad(deviceId);
 			}
 		}
 	}

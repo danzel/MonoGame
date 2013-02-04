@@ -81,10 +81,10 @@ namespace Microsoft.Xna.Framework
         public AndroidGameWindow(Context context, Game game) : base(context)
         {
             _game = game;
-            Initialize();
+            Initialize(context);
         }		
 						
-        private void Initialize()
+        private void Initialize(Context context)
         {            
 			clientBounds = new Rectangle(0, 0, Context.Resources.DisplayMetrics.WidthPixels, Context.Resources.DisplayMetrics.HeightPixels);
 
@@ -94,7 +94,7 @@ namespace Microsoft.Xna.Framework
             _touchManager = new AndroidTouchEventManager(_game);
 
 #if OUYA
-	        GamePad.Initialize();
+	        GamePad.Initialize(context);
 #endif
         }
 		
