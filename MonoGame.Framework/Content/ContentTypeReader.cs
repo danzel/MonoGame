@@ -137,10 +137,6 @@ namespace Microsoft.Xna.Framework.Content
             if (File.Exists(fileName))
 				return fileName;
 #endif
-			// Check the file extension
-			if (!string.IsNullOrEmpty(Path.GetExtension(fileName)))
-				return null;
-			
             foreach (string ext in extensions)
             {
 			    // Concat the file name with valid extensions
@@ -154,7 +150,7 @@ namespace Microsoft.Xna.Framework.Content
 				    return fileNamePlusExt;
 #endif
             }
-			
+
 			return null;
 		}
 #endif
