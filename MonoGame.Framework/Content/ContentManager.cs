@@ -373,6 +373,11 @@ namespace Microsoft.Xna.Framework.Content
                     Texture2D texture = Texture2D.FromStream(
                         graphicsDeviceService.GraphicsDevice, assetStream);
                     texture.Name = originalAssetName;
+                    if (assetName.Contains ("@2x."))
+                    {
+                        texture.width /= 2;
+                        texture.height /= 2;
+                    }
                     return texture;
                 }
             }
