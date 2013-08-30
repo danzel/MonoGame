@@ -525,9 +525,10 @@ namespace Microsoft.Xna.Framework.Audio
         static SoundEffect()
         {
             InitializeSoundEffect();
+	        AppDomain.CurrentDomain.ProcessExit += delegate { Shutdown(); };
         }
 
-        // Does someone actually need to call this if it only happens when the whole
+	    // Does someone actually need to call this if it only happens when the whole
         // game closes? And if so, who would make the call?
         internal static void Shutdown()
         {
