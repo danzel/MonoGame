@@ -525,7 +525,9 @@ namespace Microsoft.Xna.Framework.Audio
         static SoundEffect()
         {
             InitializeSoundEffect();
+#if !WINDOWS_PHONE
 	        AppDomain.CurrentDomain.ProcessExit += delegate { Shutdown(); };
+#endif
         }
 
 	    // Does someone actually need to call this if it only happens when the whole
