@@ -123,19 +123,6 @@ namespace Microsoft.Xna.Framework
             return stream;
 #elif ANDROID
             return Game.Activity.Assets.Open(safeName);
-#elif IOS
-            var absolutePath = Path.Combine(Location, safeName);
-            if (SupportRetina)
-            {
-                // Insert the @2x immediately prior to the extension. If this file exists
-                // and we are on a Retina device, return this file instead.
-                var absolutePath2x = Path.Combine(Path.GetDirectoryName(absolutePath),
-                                                  Path.GetFileNameWithoutExtension(absolutePath)
-                                                  + "@2x" + Path.GetExtension(absolutePath));
-                if (File.Exists(absolutePath2x))
-                    return File.OpenRead(absolutePath2x);
-            }
-            return File.OpenRead(absolutePath);
 #else
             var absolutePath = Path.Combine(Location, safeName);
             return File.OpenRead(absolutePath);
