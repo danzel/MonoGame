@@ -49,14 +49,6 @@ namespace Microsoft.Xna.Framework.Content
 
         internal static string Normalize(string fileName)
         {
-#if IOS
-            if (TitleContainer.SupportRetina)
-            {
-                var res = Normalize(fileName + "@2x", supportedExtensions);
-                if (res != null)
-                    return res;
-            }
-#endif
             return Normalize(fileName, supportedExtensions);
         }
 
