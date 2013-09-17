@@ -87,8 +87,8 @@ namespace Microsoft.Xna.Framework.Content
 				// Adds the ContentManager's RootDirectory
                 path = Path.Combine(input.ContentManager.RootDirectoryFullPath, path);
 			}
-			
-			var durationMs = input.ReadObject<int>();
+
+			var durationMs = input.ReadInt32();
 
             return new Song(path, durationMs); 
 		}
