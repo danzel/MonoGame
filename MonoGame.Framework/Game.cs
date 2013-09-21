@@ -125,7 +125,7 @@ namespace Microsoft.Xna.Framework
         private TimeSpan _targetElapsedTime = TimeSpan.FromTicks((long)10000000 / (long)DefaultTargetFramesPerSecond);
         private TimeSpan _inactiveSleepTime = TimeSpan.FromSeconds(1);
 
-        private readonly TimeSpan _maxElapsedTime = TimeSpan.FromMilliseconds(500);
+		private readonly TimeSpan _maxElapsedTime = TimeSpan.FromTicks((long)20000000 / (long)DefaultTargetFramesPerSecond);
 
 
         private bool _suppressDraw;
