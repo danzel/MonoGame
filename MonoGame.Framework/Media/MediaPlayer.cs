@@ -488,7 +488,7 @@ namespace Microsoft.Xna.Framework.Media
 				_numSongsInQueuePlayed = 0;
 				if (!IsRepeating)
 				{
-					State = MediaState.Stopped;
+					Stop();
 
 					if (ActiveSongChanged != null)
 					{
