@@ -160,6 +160,8 @@ namespace Microsoft.Xna.Framework
 
             DisplayOrientation oldOrientation = CurrentOrientation;
 
+	        Android.Util.Log.Info("SetOrientation", "From " + CurrentOrientation + " to " + newOrientation);
+
             SetDisplayOrientation(newOrientation);
             TouchPanel.DisplayOrientation = newOrientation;
 
