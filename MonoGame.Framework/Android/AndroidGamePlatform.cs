@@ -23,7 +23,6 @@ namespace Microsoft.Xna.Framework
             Window = _gameWindow;
         }
 
-        private bool _initialized;
         public static bool IsPlayingVdeo { get; set; }
         private bool _exiting = false;
         private AndroidGameWindow _gameWindow;
@@ -57,17 +56,12 @@ namespace Microsoft.Xna.Framework
 
         public override void StartRunLoop()
         {
-			_gameWindow.GameView.Resume();
+            // Run it as fast as we can to allow for more response on threaded GPU resource creation
+            _gameWindow.GameView.Run();
         }
 
         public override bool BeforeUpdate(GameTime gameTime)
         {
-            if (!_initialized)
-            {
-                Game.DoInitialize();
-                _initialized = true;
-            }
-
             return true;
         }
 
@@ -96,15 +90,6 @@ namespace Microsoft.Xna.Framework
             }
             base.BeforeInitialize();
             _gameWindow.GameView.TouchEnabled = true;
-        }
-
-        public override bool BeforeRun()
-        {
-
-            // Run it as fast as we can to allow for more response on threaded GPU resource creation
-			_gameWindow.GameView.Run();
-
-            return false;
         }
 
         public override void EnterFullScreen()

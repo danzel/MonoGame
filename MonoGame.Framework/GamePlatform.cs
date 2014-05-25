@@ -269,14 +269,10 @@ namespace Microsoft.Xna.Framework
         }
 
         /// <summary>
-        /// Gives derived classes an opportunity to do work just before the
-        /// run loop is begun.  Implementations may also return false to prevent
-        /// the run loop from starting.
+        /// Gives derived classes an opportunity to do work just before the run loop is begun.
         /// </summary>
-        /// <returns></returns>
-        public virtual bool BeforeRun()
+        public virtual void BeforeRun()
         {
-            return true;
         }
 
         /// <summary>

@@ -387,8 +387,7 @@ namespace Microsoft.Xna.Framework
         public void RunOneFrame()
         {
             AssertNotDisposed();
-            if (!Platform.BeforeRun())
-                return;
+            Platform.BeforeRun();
 
             if (!_initialized) {
                 DoInitialize ();
@@ -398,7 +397,8 @@ namespace Microsoft.Xna.Framework
             BeginRun();
 
             //Not quite right..
-            Tick ();
+            _gameTimer = Stopwatch.StartNew();
+            Tick();
 
             EndRun ();
 
@@ -412,16 +412,13 @@ namespace Microsoft.Xna.Framework
         public void Run(GameRunBehavior runBehavior)
         {
             AssertNotDisposed();
-            if (!Platform.BeforeRun())
-                return;
-
-            if (!_initialized) {
-                DoInitialize ();
+            if (!_initialized)
+            {
+                DoInitialize();
                 _initialized = true;
             }
+            Platform.BeforeRun();
 
-            BeginRun();
-            _gameTimer = Stopwatch.StartNew();
             switch (runBehavior)
             {
             case GameRunBehavior.Asynchronous:
@@ -447,6 +444,13 @@ namespace Microsoft.Xna.Framework
 
         public void Tick()
         {
+            //Asynchronous GameRunBehavior initializes in the first tick
+            //if (!_initialized)
+            //{
+            //    DoInitialize();
+            //    _initialized = true;
+            //}
+
             // NOTE: This code is very sensitive and can break very badly
             // with even what looks like a safe change.  Be sure to test 
             // any change fully in both the fixed and variable timestep 
@@ -715,6 +719,9 @@ namespace Microsoft.Xna.Framework
             CategorizeComponents();
             _components.ComponentAdded += Components_ComponentAdded;
             _components.ComponentRemoved += Components_ComponentRemoved;
+
+            BeginRun();
+            _gameTimer = Stopwatch.StartNew();
         }
 
 		internal void DoExiting()
