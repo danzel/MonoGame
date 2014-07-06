@@ -46,6 +46,7 @@ using System.Text;
 using Lz4;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SevenZip;
 using Path = System.IO.Path;
 using System.Diagnostics;
 
@@ -533,12 +534,17 @@ namespace Microsoft.Xna.Framework.Content
                 }
                 else if (compressedLz4)
                 {
-                    decompressedStream.SetLength(decompressedSize);
-                    using (var decoderStream = new Lz4DecoderStream(stream))
-                    {
-                        decoderStream.Read(decompressedStream.GetBuffer(), 0, decompressedSize);
-                    }
-                    decompressedStream.Position = decompressedSize;
+					int compressedSize = xnbLength - 14;
+					byte[] temp = new byte[compressedSize];
+					stream.Read(temp, 0, compressedSize);
+					
+					SevenZipBase.SetLibraryPath("./7z.dll");
+                    //decompressedStream.SetLength(decompressedSize);
+
+					
+	                var ext = new SevenZipExtractor(new MemoryStream(temp));
+	                ext.ExtractFile(0, decompressedStream);
+                    //decompressedStream.Position = decompressedSize;
                 }
 
                 if (decompressedStream.Position != decompressedSize)

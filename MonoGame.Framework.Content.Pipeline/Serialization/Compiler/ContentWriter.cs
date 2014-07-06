@@ -4,10 +4,13 @@
 
 using System;
 using System.IO;
+using System.IO.Compression;
 using LZ4n;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Framework.Content.Pipeline.Builder;
 using System.Collections.Generic;
+using SevenZip;
+using CompressionMode = System.IO.Compression.CompressionMode;
 
 namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
 {
@@ -198,16 +201,21 @@ namespace Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler
         /// <param name="stream">The stream to compress and write to the output.</param>
         void WriteCompressedStream(MemoryStream stream)
         {
-            // Compress stream
-            var maxLength = LZ4Codec.MaximumOutputLength((int)stream.Length);
-            var outputArray = new byte[maxLength];
-            int resultLength = LZ4Codec.Encode32HC(stream.GetBuffer(), 0, (int)stream.Length, outputArray, 0, maxLength);
+	        SevenZipBase.SetLibraryPath("./7z64.dll");
 
-            UInt32 totalSize = (UInt32)(headerStream.Length + resultLength + sizeof(UInt32) + sizeof(UInt32));
+	        var compressor = new SevenZipCompressor();
+			compressor.ArchiveFormat = OutArchiveFormat.SevenZip;
+			compressor.CompressionLevel = CompressionLevel.Fast;
+			compressor.CompressionMethod = CompressionMethod.Lzma;
+			//compressor.CustomParameters.Add("mt", "on");
+	        var output = new MemoryStream((int)stream.Length);
+	        compressor.CompressStream(stream, output);
+
+			UInt32 totalSize = (UInt32)(headerStream.Length + output.Length + sizeof(UInt32) + sizeof(UInt32));
             Write(totalSize);
             Write((int)stream.Length);
 
-            outputStream.Write(outputArray, 0, resultLength);
+			outputStream.Write(output.GetBuffer(), 0, (int)output.Length);
         }
 
         /// <summary>
