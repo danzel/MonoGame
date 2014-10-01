@@ -39,7 +39,10 @@ namespace Microsoft.Xna.Framework.Utilities
 
             // The uri now contains the path to the relativeFile with relative addresses resolved
             // Get the local path and skip the first character (the path separator)
-            return NormalizeFilePathSeparators(dst.LocalPath.Substring(1));
+            var res = dst.LocalPath;
+            if (res.StartsWith("/") || res.StartsWith("\\"))
+                res = res.Substring(1);
+            return NormalizeFilePathSeparators(res);
         }
     }
 }
