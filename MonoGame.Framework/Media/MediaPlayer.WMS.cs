@@ -119,7 +119,7 @@ namespace Microsoft.Xna.Framework.Media
             _session.Pause();
         }
 
-        private static void PlatformPlaySong(Song song)
+        private static void PlatformPlaySong(Song song, TimeSpan? startPosition)
         {
             // Cleanup the last song first.
             if (State != MediaState.Stopped)
@@ -150,6 +150,9 @@ namespace Microsoft.Xna.Framework.Media
 
             // Start playing.
             var varStart = new Variant();
+            if (startPosition.HasValue)
+                varStart.Value = (long)(10000000L * (startPosition.Value.TotalSeconds));
+
             _session.Start(null, varStart);
         }
 
