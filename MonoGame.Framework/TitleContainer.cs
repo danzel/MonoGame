@@ -75,7 +75,7 @@ namespace Microsoft.Xna.Framework
         public static Stream OpenStream(string name)
         {
             // Normalize the file path.
-            var safeName = GetFilename(name);
+	        var safeName = name;//GetFilename(name);
 
             // We do not accept absolute paths here.
             if (Path.IsPathRooted(safeName))
