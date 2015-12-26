@@ -170,7 +170,15 @@ namespace Microsoft.Xna.Framework.Graphics
             for (int i = 0; i < pixelCount; ++i)
             {
                 uint pixel = (uint)pixels[i];
-                pixels[i] = (int)((pixel & 0xFF00FF00) | ((pixel & 0x00FF0000) >> 16) | ((pixel & 0x000000FF) << 16));
+                //pixels[i] = (int)((pixel & 0xFF00FF00) | ((pixel & 0x00FF0000) >> 16) | ((pixel & 0x000000FF) << 16));
+				var alpha = pixel >> 24;
+				pixels[i] =
+					(int)(
+						(pixel & 0xFF000000) | //A
+						((((pixel & 0x000000FF) * alpha) >> 8) << 16) | //B
+						((((pixel & 0x0000FF00) * alpha) >> 8) & 0x0000FF00) | //G
+						((((pixel & 0x00FF0000) * alpha) >> 24) & 0x000000FF) //R
+						);
             }
         }
 	}
